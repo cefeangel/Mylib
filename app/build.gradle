@@ -21,7 +21,11 @@ android {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "file:///C:/Users/DEV/gradle/rep/")
+            //repository(url: "file:///C:/Users/DEV/gradle/rep/")
+
+            repository(url: "http://localhost:8081/nexus/content/repositories/releases/"){
+                    authentication(userName: "admin", password: "admin123")
+            }
 
             pom.groupId = GROUP
             pom.artifactId = POM_ARTIFACT_ID
@@ -29,7 +33,7 @@ uploadArchives {
         }
     }
 }
-task install(dependsOn: uploadArchives)
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -39,3 +43,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
 }
+
+apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+
+task install(dependsOn: uploadArchives)
+
